@@ -143,12 +143,13 @@ export function EnergyOverview({
                     size={22}
                     className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-primary"
                   />
-                  <a
+                  <Button
+                    variant={"link"}
                     onClick={refetch}
                     className="cursor-pointer text-sm text-destructive underline-offset-1 hover:underline"
                   >
                     Oops... Try again
-                  </a>
+                  </Button>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
