@@ -11,10 +11,10 @@ export const calculateBatteryChargeTime = ({
   powerScale,
   percentage,
 }: BatteryChargeTimeInput): string => {
-  const energyNeeded = batteryCapacity * powerScale * (percentage / 100); // Ensure percentage is correctly applied
+  const energyNeeded = batteryCapacity * powerScale * (percentage / 100);
   const batteryChargingTimeInDays = energyNeeded / dailyPowerGeneration; // This is already in days
 
-  // Check if the time to charge in hours is greater than 100
+  // Check if the time to charge in hours is greater than 24 hours
   const batteryChargingTimeInHours = batteryChargingTimeInDays * 24;
   if (batteryChargingTimeInHours > 24) {
     // Return the time in days with 'days' unit if more than 100 hours
