@@ -1,7 +1,11 @@
 import { Button } from "./ui/button";
 import { InputWithErrorMsg } from "./ui/input";
 import { SelectWithHover } from "./ui/select";
-import { BateryPercent, powerScale, useEnergyStateStore } from "@/store/energy";
+import {
+  type BateryPercent,
+  powerScale,
+  useEnergyStateStore,
+} from "@/store/energy";
 
 const BATTERY_LEVEL: BateryPercent[] = ["25%", "50%", "75%", "100%"];
 
@@ -68,8 +72,8 @@ export function LocationInstallationDetailForm() {
             <Button
               key={level}
               type="submit"
-              className={`min-h-14 w-full rounded-full px-6 py-2 font-semibold transition hover:bg-secondary hover:text-primary
-              ${chargedTarget === parseInt(level ?? "100%") / 100 ? "bg-secondary  text-primary hover:bg-primary hover:text-secondary" : "bg-primary text-secondary"}
+              className={`min-h-14 w-full rounded-full px-6 py-2 font-semibold
+              ${chargedTarget === parseInt(level ?? "100%") / 100 ? "bg-primary text-secondary hover:bg-primary" : "bg-secondary text-primary hover:bg-primary hover:text-secondary"}
             `}
               onClick={() => setSelectedPercent(level)}
               disabled={chargedTarget === level}
