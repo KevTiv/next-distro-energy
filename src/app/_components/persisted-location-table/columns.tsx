@@ -53,19 +53,9 @@ export const columns: ColumnDef<SavedGeoJson>[] = [
       <DataTableColumnHeader column={column} title="Charge Time" />
     ),
     cell: ({ row }) => {
-      const { locations } = useLocationStore();
-      const batteryChargingTime = locations.find(
-        (location) =>
-          location.batteryChargingTime === row.getValue("batteryChargingTime"),
-      )?.batteryChargingTime;
-
-      if (!batteryChargingTime) {
-        return null;
-      }
-
       return (
         <div className="flex items-center">
-          <span>{batteryChargingTime}</span>
+          <span>{row.getValue("batteryChargingTime")}</span>
         </div>
       );
     },
