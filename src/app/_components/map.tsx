@@ -1,12 +1,12 @@
 "use client";
-import { ReactElement, useMemo } from "react";
+import { type ReactElement, useCallback, useMemo } from "react";
 import { Map } from "react-map-gl";
 import DeckGL from "@deck.gl/react/typed";
 import { GeoJsonLayer } from "@deck.gl/layers/typed";
 import { env } from "@/env";
 import { Button } from "./ui/button";
 import { MapPin, Trash2 } from "lucide-react";
-import { MapAction, useLocationStore } from "@/store/locations";
+import { type MapAction, useLocationStore } from "@/store/locations";
 import { findNearestSavedLocation } from "@/lib/findNearestSavedLocation";
 import {
   Tooltip,
@@ -80,14 +80,6 @@ export function BatteryLocationsMap() {
     },
   ];
 
-  const getFeatureColor = (action?: MapAction): [number, number, number] => {
-    if (action === "removeLocation") {
-      return [236, 83, 80]; // Red for removeLocation action
-    }
-    // Default color
-    return [17, 37, 69]; // Blue 2
-  };
-
   const layers = useMemo(
     () => [
       new GeoJsonLayer({
@@ -97,7 +89,7 @@ export function BatteryLocationsMap() {
         pointRadiusMinPixels: 2.5,
         pointRadiusScale: 2000,
         getPointRadius: () => 2.5,
-        getFillColor: () => getFeatureColor(mapAction),
+        getFillColor: () => [17, 37, 69],
         pickable: true,
         autoHighlight: true,
         onClick: (e) => {
@@ -137,7 +129,7 @@ export function BatteryLocationsMap() {
               <TooltipTrigger>
                 <Button
                   onClick={onClick}
-                  className={`${selected ? "" : "bg-secondary text-primary hover:text-secondary"} w-12`}
+                  className={`hover:bg-primary hover:text-secondary focus:text-secondary ${selected ? "" : "bg-secondary text-primary hover:text-secondary"} w-12`}
                 >
                   {icon}
                 </Button>

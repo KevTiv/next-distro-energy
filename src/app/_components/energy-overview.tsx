@@ -1,4 +1,4 @@
-import { WeatherData } from "@/server/api/types/weatherbit.types";
+import { type WeatherData } from "@/server/api/types/weatherbit.types";
 import {
   CalendarDays,
   Flag,
@@ -39,7 +39,7 @@ export function EnergyOverview({
   isError,
   isLoading,
   refetch,
-}: EnergyOverviewProps) {
+}: Readonly<EnergyOverviewProps>) {
   const { solarPanelArea, batteryCapacity, powerScale, chargedTarget } =
     useEnergyStateStore();
   const { selectedLocation, updateLocation } = useLocationStore();
@@ -157,12 +157,12 @@ export function EnergyOverview({
                     size={22}
                     className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-primary"
                   />
-                  <p
+                  <a
                     onClick={refetch}
                     className="cursor-pointer text-sm text-destructive underline-offset-1 hover:underline"
                   >
                     Oops... Try again
-                  </p>
+                  </a>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
