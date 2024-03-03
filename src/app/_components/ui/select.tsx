@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
-import { powerScale } from "@/store/energy";
+import { type powerScale } from "@/store/energy";
 
 const Select = SelectPrimitive.Root;
 
@@ -183,7 +183,7 @@ const SelectWithHover = ({
               setPowerScale?.(value as keyof typeof powerScale)
             }
           >
-            <SelectTrigger className="min-h-14 w-full rounded-full bg-white px-4 py-2 text-black">
+            <SelectTrigger className="min-h-14 w-full rounded-full px-4 py-2 text-black">
               <SelectValue placeholder={label} />
             </SelectTrigger>
             <SelectContent>

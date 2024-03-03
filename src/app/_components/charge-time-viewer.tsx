@@ -13,7 +13,7 @@ export function ChargeTimeViewer({
   return (
     <div className="flex flex-col gap-2">
       <div className="grid grid-cols-3 items-center gap-4">
-        <h3 className="text-md flex items-center gap-2 font-semibold">
+        <h3 className="flex items-center gap-2 text-sm font-semibold">
           <BatteryCharging className="text-secondary" size={32} />
           Charging time
         </h3>

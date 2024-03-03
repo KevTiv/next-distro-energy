@@ -70,7 +70,7 @@ export function EnergyOverview({
   }, [chargedTarget, energyPotential?.[1], batteryCapacity, powerScale]);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-4">
       <div className="flex w-full items-center justify-between gap-6 px-4">
         <div>
           <h3 className="text-md items-senter flex gap-3 font-semibold">
@@ -207,6 +207,7 @@ export function EnergyOverview({
           </div>
         </div>
       </div>
+
       <ChargeTimeViewer
         batteryChargingTime={batteryChargingTime}
         chargedTarget={chargedTarget}

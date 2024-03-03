@@ -33,7 +33,7 @@ export function LocationInstallationDetailForm() {
         placeholder="Solar panel surfaces (m^2)"
         value={solarPanelArea}
         onChange={(e) => setSolarPanelArea(Number(e.target.value))}
-        className="min-h-14 w-full rounded-full bg-white px-4 py-2 text-black"
+        className="min-h-14 w-full rounded-full px-4 py-2 text-black"
         isError={!!chargedTarget && !solarPanelArea}
         errorMsg="This field cannot remain empty"
       />
@@ -46,7 +46,7 @@ export function LocationInstallationDetailForm() {
           placeholder="Battery Installation Capacity"
           value={batteryCapacity}
           onChange={(e) => setChargedTarget(Number(e.target.value))}
-          className="min-h-14 w-full rounded-full bg-white px-4 py-2 text-black"
+          className="min-h-14 w-full rounded-full px-4 py-2 text-black"
           isError={!!chargedTarget && !batteryCapacity}
           errorMsg="This field cannot remain empty"
         />
@@ -60,7 +60,6 @@ export function LocationInstallationDetailForm() {
           tooltip="Select unit of power"
           label="P"
           selectionLabel="Power Unit"
-          className="flex w-1/5 flex-1"
           setPowerScale={setPowerScale}
         />
       </div>

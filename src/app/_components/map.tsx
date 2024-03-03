@@ -141,7 +141,10 @@ export function BatteryLocationsMap({
           </p>
         </div>
       ) : (
-        <MapPinOff size={16} />
+        <div className="flex items-center gap-2">
+          <p className="text-xs font-medium">No location selected</p>
+          <MapPinOff size={16} />
+        </div>
       )}
       <div className="absolute -top-16 right-0 m-4 flex gap-2">
         {locationActions.map(({ icon, tooltip, selected, onClick }) => (
