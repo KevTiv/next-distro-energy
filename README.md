@@ -6,7 +6,7 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 
 - [Next.js](https://nextjs.org)
 - [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io) Most pratical feature of this library is the ability to define types in the server folder and this type being reuse in the api calls made in the frontend.
+- [tRPC](https://trpc.io)
 
 ## Get started
 #### nvm version: v20.6.0
