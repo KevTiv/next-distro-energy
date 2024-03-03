@@ -43,7 +43,7 @@ export function EnergyOverview({
   const { solarPanelArea, batteryCapacity, powerScale, chargedTarget } =
     useEnergyStateStore();
   const { selectedLocation, updateLocation } = useLocationStore();
-  const isLoaderShown = isLoading || isError;
+  const isLoaderShown = isLoading ?? isError;
 
   const energyPotential = useMemo(() => {
     return weatherData && solarPanelArea
@@ -144,7 +144,7 @@ export function EnergyOverview({
         <div className="flex items-center justify-center text-2xl font-semibold">
           {isLoaderShown && (
             <div className="relative h-full w-full space-y-1 px-3">
-              <Skeleton className="duration-[6000] h-full w-full bg-muted" />
+              <Skeleton className="h-full w-full bg-muted duration-1000" />
               {isLoading && (
                 <Zap
                   size={22}

@@ -43,9 +43,6 @@ export const columns: ColumnDef<SavedGeoJson>[] = [
         </div>
       );
     },
-    filterFn: (row, batteryChargePercent, value) => {
-      return value.includes(row.getValue(batteryChargePercent));
-    },
   },
   {
     accessorKey: "batteryChargingTime",
@@ -58,9 +55,6 @@ export const columns: ColumnDef<SavedGeoJson>[] = [
           <span>{row.getValue("batteryChargingTime")}</span>
         </div>
       );
-    },
-    filterFn: (row, batteryChargingTime, value) => {
-      return value.sort(row.getValue(batteryChargingTime));
     },
   },
   {

@@ -14,7 +14,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-import { Feature, GeoJsonProperties, Geometry } from "geojson";
 
 const MAP_STYLE =
   "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
@@ -57,6 +56,7 @@ export function BatteryLocationsMap() {
           coordinates: coordinate,
         },
       });
+      updateMapAction(undefined);
     }
   };
 
@@ -80,18 +80,12 @@ export function BatteryLocationsMap() {
     },
   ];
 
-  const getFeatureColor = (
-    feature: Feature<Geometry, GeoJsonProperties>,
-    action?: MapAction,
-  ): [number, number, number] => {
-    // Define your color logic here, for example:
+  const getFeatureColor = (action?: MapAction): [number, number, number] => {
     if (action === "removeLocation") {
-      return [255, 0, 0]; // Red for removeLocation action
-    } else if (action === "setNewLocation") {
-      return [0, 255, 0]; // Green for setNewLocation action
+      return [236, 83, 80]; // Red for removeLocation action
     }
     // Default color
-    return [0, 0, 0]; // Black
+    return [17, 37, 69]; // Blue 2
   };
 
   const layers = useMemo(
@@ -102,13 +96,12 @@ export function BatteryLocationsMap() {
         filled: true,
         pointRadiusMinPixels: 2.5,
         pointRadiusScale: 2000,
-        getPointRadius: (f) => 2.5,
-        getFillColor: (feature) => getFeatureColor(feature, mapAction),
+        getPointRadius: () => 2.5,
+        getFillColor: () => getFeatureColor(mapAction),
         pickable: true,
         autoHighlight: true,
         onClick: (e) => {
           if (!e.coordinate) {
-            setSelectedLocation(undefined);
             return;
           }
 
@@ -126,6 +119,7 @@ export function BatteryLocationsMap() {
 
             if (closestLocation) {
               removeLocation(closestLocation.geometry.coordinates);
+              updateMapAction(undefined);
             }
           }
         },
