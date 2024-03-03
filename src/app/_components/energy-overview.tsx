@@ -80,7 +80,7 @@ export function EnergyOverview({
             <p className="text-xs font-medium">Select a location on the map</p>
           )}
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-12">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
