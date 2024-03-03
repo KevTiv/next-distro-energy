@@ -1,39 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
-import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { SavedGeoJson, usePersistedLocationStore } from "@/store/locations";
+import { SavedGeoJson, useLocationStore } from "@/store/locations";
 
 export const columns: ColumnDef<SavedGeoJson>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "city",
     header: ({ column }) => (
@@ -49,10 +23,12 @@ export const columns: ColumnDef<SavedGeoJson>[] = [
       <DataTableColumnHeader column={column} title="Forecast Output" />
     ),
     cell: ({ row }) => {
-      const { locations } = usePersistedLocationStore();
-      const forecastOutput = locations?.find(
-        (location) => location.forecastOutput === row.original.forecastOutput,
-      )?.forecastOutput;
+      const { locations } = useLocationStore();
+      const forecastOutput = locations
+        ?.filter((location) => location.forecastOutput !== undefined)
+        .find(
+          (location) => location.forecastOutput === row.original.forecastOutput,
+        )?.forecastOutput;
 
       return (
         <div className="flex space-x-2">
@@ -70,7 +46,7 @@ export const columns: ColumnDef<SavedGeoJson>[] = [
       <DataTableColumnHeader column={column} title="Charge Target" />
     ),
     cell: ({ row }) => {
-      const { locations } = usePersistedLocationStore();
+      const { locations } = useLocationStore();
       const percent = locations.find(
         (location) =>
           location.batteryChargePercent ===
@@ -100,7 +76,7 @@ export const columns: ColumnDef<SavedGeoJson>[] = [
       <DataTableColumnHeader column={column} title="Charge Time" />
     ),
     cell: ({ row }) => {
-      const { locations } = usePersistedLocationStore();
+      const { locations } = useLocationStore();
       const batteryChargingTime = locations.find(
         (location) =>
           location.batteryChargingTime === row.getValue("batteryChargingTime"),

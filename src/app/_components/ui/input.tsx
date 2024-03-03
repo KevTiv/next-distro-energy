@@ -31,7 +31,7 @@ const InputWithErrorMsg = (props: InputWithErrorProps) => {
   return (
     <div className="relative flex w-full flex-col gap-1">
       <Input {...props} />
-      {isError && <p className="px-2 text-sm text-red-500">{errorMsg}</p>}
+      {isError && <p className="px-2 text-sm text-destructive">{errorMsg}</p>}
     </div>
   );
 };

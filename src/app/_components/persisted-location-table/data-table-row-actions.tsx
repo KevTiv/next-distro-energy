@@ -11,7 +11,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { savedGeoJson, usePersistedLocationStore } from "@/store/locations";
+import { savedGeoJson, useLocationStore } from "@/store/locations";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -21,7 +21,7 @@ export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const location = savedGeoJson.parse(row.original);
-  const { removePersistedLocation } = usePersistedLocationStore();
+  const { removeLocation } = useLocationStore();
 
   return (
     <DropdownMenu>
@@ -34,15 +34,11 @@ export function DataTableRowActions<TData>({
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="w-[160px]"
-        onChange={(e) => console.log(e)}
-      >
+      <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
-          onSelect={() =>
-            removePersistedLocation(location.geometry.coordinates)
-          }
+          onSelect={() => {
+            removeLocation(location.geometry.coordinates);
+          }}
         >
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
