@@ -5,7 +5,6 @@ import {
 import { z } from "zod";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { powerScale } from "./energy";
 
 export type MapAction = "setNewLocation" | "removeLocation" | "updateLocation";
 export const powerUnits = z.enum(["W", "kW", "MW", "GW"]);
@@ -33,7 +32,7 @@ type LocationsStore = {
 
 export const useLocationStore = create(
   persist<LocationsStore>(
-    (set, get) => ({
+    (set) => ({
       selectedLocation: undefined,
       locations: [],
       mapAction: undefined,

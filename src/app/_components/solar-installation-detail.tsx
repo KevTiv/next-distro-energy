@@ -1,4 +1,3 @@
-import { Badge } from "lucide-react";
 import { Button } from "./ui/button";
 import { InputWithErrorMsg } from "./ui/input";
 import { SelectWithHover } from "./ui/select";

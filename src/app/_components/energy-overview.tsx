@@ -1,4 +1,4 @@
-import { WeatherData } from "@/server/api/routers/weatherbit";
+import { WeatherData } from "@/server/api/types/wethaerbit.types";
 import {
   CalendarDays,
   Flag,
@@ -224,6 +224,10 @@ export function EnergyOverview({
           </div>
         </div>
       </div>
+      <ChargeTimeViewer
+        batteryChargingTime={batteryChargingTime}
+        chargedTarget={chargedTarget}
+      />
     </div>
   );
 }
