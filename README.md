@@ -28,6 +28,8 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 
 then open [localhost](http://localhost:3000/) in your browser
 
+#### [Live demo](https://next-distro-energy.vercel.app/)
+
 ## How to use this component
 This component assume you would like to know the potential solar energy output
 your solar panel installation would take to charge a battery setup this battery
