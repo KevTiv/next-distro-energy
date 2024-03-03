@@ -191,9 +191,9 @@ const SelectWithHover = ({
                 <SelectLabel>{selectionLabel}</SelectLabel>
                 {selectOptions?.map((option) => (
                   <SelectItem
+                    key={option}
                     onChange={(e) => {
                       setPowerScale?.(option);
-                      console.log("test click", e);
                     }}
                     value={String(option)}
                   >

@@ -5,7 +5,7 @@ import { Checkbox } from "../ui/checkbox";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { SavedGeoJson, useLocationStore } from "@/store/locations";
+import { type SavedGeoJson, useLocationStore } from "@/store/locations";
 
 export const columns: ColumnDef<SavedGeoJson>[] = [
   {

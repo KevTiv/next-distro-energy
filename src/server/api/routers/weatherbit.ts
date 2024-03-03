@@ -17,7 +17,7 @@ export const weatherBitRouter = createTRPCRouter({
       }
 
       let queryParams = "";
-      let apiUrl = `${env.WEATHERBIT_API_URL}/current/?key=${env.WEATHERBIT_API_TOKEN}`;
+      const apiUrl = `${env.WEATHERBIT_API_URL}/current/?key=${env.WEATHERBIT_API_TOKEN}`;
 
       Object.keys(input).forEach((key) => {
         if (input[key as ParamsKey]) {
