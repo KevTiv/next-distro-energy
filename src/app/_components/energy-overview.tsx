@@ -1,4 +1,4 @@
-import { WeatherData } from "@/server/api/types/wethaerbit.types";
+import { WeatherData } from "@/server/api/types/weatherbit.types";
 import {
   CalendarDays,
   Flag,

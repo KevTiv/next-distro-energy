@@ -53,7 +53,8 @@ export const weatherData = z.object({
   wind_spd: z.number(),
 });
 export type WeatherData = z.infer<typeof weatherData>;
-const currentWeatherResponse = z.object({
+
+export const currentWeatherResponse = z.object({
   count: z.number(),
   data: z.array(weatherData),
 });

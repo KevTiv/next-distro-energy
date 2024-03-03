@@ -6,7 +6,7 @@ import {
   type ParamsKey,
   type CurrentWeatherResponse,
   currentWeatherResponse,
-} from "../types/wethaerbit.types";
+} from "../types/weatherbit.types";
 
 export const weatherBitRouter = createTRPCRouter({
   getCurrentWeather: publicProcedure
