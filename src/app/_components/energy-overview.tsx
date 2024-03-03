@@ -44,36 +44,32 @@ export function EnergyOverview({
     useEnergyStateStore();
   const { selectedLocation, updateLocation } = useLocationStore();
   const isLoaderShown = isLoading || isError;
-  const energyPotential = useMemo(
-    () =>
-      weatherData && solarPanelArea
-        ? calculateDailyEnergyGeneration({
-            aqi: weatherData?.aqi,
-            ghi: weatherData?.ghi,
-            panelArea: solarPanelArea,
-            panelEfficiency: 0.15,
-          })
-        : undefined,
-    [weatherData, solarPanelArea],
-  );
 
-  const batteryChargingTime = useMemo(
-    () =>
-      String(energyPotential) !== "infinty" &&
+  const energyPotential = useMemo(() => {
+    return weatherData && solarPanelArea
+      ? calculateDailyEnergyGeneration({
+          aqi: weatherData?.aqi,
+          ghi: weatherData?.ghi,
+          panelArea: solarPanelArea,
+          panelEfficiency: 0.15,
+        })
+      : undefined;
+  }, [weatherData, solarPanelArea]);
+
+  const batteryChargingTime = useMemo(() => {
+    return energyPotential?.[1] !== "infinity" &&
       energyPotential?.[1] &&
-      batteryCapacity &&
-      batteryCapacity > 0 &&
+      Number(batteryCapacity) > 0 &&
       chargedTarget &&
       powerScale
-        ? calculateBatteryChargeTime({
-            dailyPowerGeneration: Number(energyPotential[1]), // in watt-hours
-            batteryCapacity: batteryCapacity, // in watt-hours
-            powerScale: powerScale,
-            percentage: chargedTarget,
-          })
-        : undefined,
-    [chargedTarget, energyPotential?.[1], batteryCapacity, powerScale],
-  );
+      ? calculateBatteryChargeTime({
+          dailyPowerGeneration: Number(energyPotential[1]),
+          batteryCapacity: Number(batteryCapacity),
+          powerScale: powerScale,
+          percentage: chargedTarget,
+        })
+      : undefined;
+  }, [chargedTarget, energyPotential?.[1], batteryCapacity, powerScale]);
 
   return (
     <div className="flex flex-col gap-10">
