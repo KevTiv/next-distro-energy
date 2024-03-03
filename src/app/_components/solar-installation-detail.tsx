@@ -1,3 +1,4 @@
+import { Badge } from "lucide-react";
 import { Button } from "./ui/button";
 import { InputWithErrorMsg } from "./ui/input";
 import { SelectWithHover } from "./ui/select";
@@ -18,7 +19,12 @@ export function LocationInstallationDetailForm() {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="px-2 font-semibold">Solar panel surfaces</label>
+      <label className="flex flex-col px-2 font-semibold">
+        Solar panel surfaces
+        <p className="text-xs">
+          Note: project assume solar panel efficiency of 15%
+        </p>
+      </label>
       <InputWithErrorMsg
         type="string"
         placeholder="Solar panel surfaces (m^2)"

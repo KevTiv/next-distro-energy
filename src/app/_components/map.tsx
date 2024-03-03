@@ -6,11 +6,7 @@ import { GeoJsonLayer } from "@deck.gl/layers/typed";
 import { env } from "@/env";
 import { Button } from "./ui/button";
 import { MapPin, Trash2 } from "lucide-react";
-import {
-  MapAction,
-  useLocationStore,
-  usePersistedLocationStore,
-} from "@/store/locations";
+import { MapAction, useLocationStore } from "@/store/locations";
 import { findNearestSavedLocation } from "@/lib/findNearestSavedLocation";
 import {
   Tooltip,
@@ -18,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { Feature, GeoJsonProperties, Geometry } from "geojson";
 
 const MAP_STYLE =
   "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json";
@@ -43,11 +40,9 @@ export function BatteryLocationsMap() {
     mapAction,
     setNewLocation,
     removeLocation,
-    locations: currentLocations,
+    locations,
     setSelectedLocation,
   } = useLocationStore();
-  const { locations: savedLocations } = usePersistedLocationStore();
-  const locations = [...currentLocations, ...savedLocations];
 
   const handleAddLocation = ({
     coordinate,
@@ -85,6 +80,20 @@ export function BatteryLocationsMap() {
     },
   ];
 
+  const getFeatureColor = (
+    feature: Feature<Geometry, GeoJsonProperties>,
+    action?: MapAction,
+  ): [number, number, number] => {
+    // Define your color logic here, for example:
+    if (action === "removeLocation") {
+      return [255, 0, 0]; // Red for removeLocation action
+    } else if (action === "setNewLocation") {
+      return [0, 255, 0]; // Green for setNewLocation action
+    }
+    // Default color
+    return [0, 0, 0]; // Black
+  };
+
   const layers = useMemo(
     () => [
       new GeoJsonLayer({
@@ -94,20 +103,19 @@ export function BatteryLocationsMap() {
         pointRadiusMinPixels: 2.5,
         pointRadiusScale: 2000,
         getPointRadius: (f) => 2.5,
-        getFillColor:
-          mapAction === "removeLocation" ? [155, 155, 155] : [0, 0, 0],
-
+        getFillColor: (feature) => getFeatureColor(feature, mapAction),
         pickable: true,
         autoHighlight: true,
         onClick: (e) => {
           if (!e.coordinate) {
+            setSelectedLocation(undefined);
             return;
           }
 
-          if (!mapAction) {
+          if (!mapAction && e?.coordinate) {
             const closestLocation = findNearestSavedLocation(
               locations,
-              e.coordinate ?? [0, 0],
+              e.coordinate,
             );
             setSelectedLocation(closestLocation?.geometry?.coordinates);
           } else if (mapAction === "removeLocation") {
@@ -130,7 +138,7 @@ export function BatteryLocationsMap() {
     <div className="relative flex flex-col gap-2">
       <div className="absolute -top-16 right-0 m-4 flex gap-2">
         {locationActions.map(({ icon, tooltip, selected, onClick }) => (
-          <TooltipProvider>
+          <TooltipProvider key={`${tooltip}`}>
             <Tooltip>
               <TooltipTrigger>
                 <Button

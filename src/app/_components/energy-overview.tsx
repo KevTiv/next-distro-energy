@@ -1,5 +1,4 @@
 import { WeatherData } from "@/server/api/routers/weatherbit";
-import { Progress } from "./ui/progress";
 import {
   CalendarDays,
   Flag,
@@ -11,6 +10,8 @@ import {
   Sunset,
   Zap,
   ZapOff,
+  MapPinOff,
+  MapPin,
 } from "lucide-react";
 import { useMemo } from "react";
 import { calculateDailyEnergyGeneration } from "@/lib/dailyEnergyGeneration";
@@ -24,7 +25,8 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { Button } from "./ui/button";
-import { useLocationStore, usePersistedLocationStore } from "@/store/locations";
+import { useLocationStore } from "@/store/locations";
+import { ChargeTimeViewer } from "./charge-time-viewer";
 
 type EnergyOverviewProps = {
   weatherData?: WeatherData;
@@ -40,9 +42,8 @@ export function EnergyOverview({
 }: EnergyOverviewProps) {
   const { solarPanelArea, batteryCapacity, powerScale, chargedTarget } =
     useEnergyStateStore();
-  const { selectedLocation } = useLocationStore();
-  const { addPersistedLocation } = usePersistedLocationStore();
-
+  const { selectedLocation, updateLocation } = useLocationStore();
+  const isLoaderShown = isLoading || isError;
   const energyPotential = useMemo(
     () =>
       weatherData && solarPanelArea
@@ -61,6 +62,7 @@ export function EnergyOverview({
       String(energyPotential) !== "infinty" &&
       energyPotential?.[1] &&
       batteryCapacity &&
+      batteryCapacity > 0 &&
       chargedTarget &&
       powerScale
         ? calculateBatteryChargeTime({
@@ -84,7 +86,19 @@ export function EnergyOverview({
             <p className="text-xs font-medium">Select a location on the map</p>
           )}
         </div>
-        <div className="flex gap-4">
+        <div className="flex items-center gap-4">
+          {selectedLocation ? (
+            <div className="flex items-center gap-2">
+              <MapPin size={16} />
+              <p className="text-xs font-medium">
+                lon: {selectedLocation[0]?.toFixed(4)} lat:{" "}
+                {selectedLocation[1]?.toFixed(4)}
+              </p>
+            </div>
+          ) : (
+            <MapPinOff size={16} />
+          )}
+
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -109,7 +123,7 @@ export function EnergyOverview({
               selectedLocation &&
               energyPotential &&
               chargedTarget
-                ? addPersistedLocation({
+                ? updateLocation(selectedLocation, {
                     type: "Feature",
                     geometry: {
                       type: "Point",
@@ -130,9 +144,9 @@ export function EnergyOverview({
         </div>
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 sm:grid-rows-2">
         <div className="flex items-center justify-center text-2xl font-semibold">
-          {(isLoading || isError) && (
+          {isLoaderShown && (
             <div className="relative h-full w-full space-y-1 px-3">
               <Skeleton className="duration-[6000] h-full w-full bg-muted" />
               {isLoading && (
@@ -149,7 +163,7 @@ export function EnergyOverview({
                   />
                   <p
                     onClick={refetch}
-                    className="cursor-pointer text-sm text-red-800 underline-offset-1 hover:underline"
+                    className="cursor-pointer text-sm text-destructive underline-offset-1 hover:underline"
                   >
                     Oops... Try again
                   </p>
@@ -169,8 +183,8 @@ export function EnergyOverview({
               )}
             </div>
           )}
-          {energyPotential && (
-            <div className="flex items-center justify-center">
+          {energyPotential ? (
+            <div className="flex items-center justify-center sm:grid-rows-2">
               {energyPotential?.[1] === "infinity" ? (
                 <Infinity
                   size={32}
@@ -186,7 +200,7 @@ export function EnergyOverview({
                 {energyPotential?.[0]}
               </p>
             </div>
-          )}
+          ) : null}
         </div>
         <div className="flex flex-col gap-3 text-sm">
           <div className=" flex items-center justify-start gap-1">
@@ -209,26 +223,6 @@ export function EnergyOverview({
             {weatherData?.sunset && <span>Sunset {weatherData.sunset}</span>}
           </div>
         </div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="grid grid-cols-3 items-center gap-4">
-          <h3 className="text-md font-semibold">Charging time</h3>
-          <div className="col-span-2 flex items-center gap-1">
-            {batteryChargingTime && chargedTarget && (
-              <p className=" flex w-full items-center gap-2">
-                {batteryChargingTime} to {chargedTarget * 100} %
-                <Zap
-                  size={16}
-                  className="font-thin text-primary text-yellow-400"
-                />
-              </p>
-            )}
-          </div>
-        </div>
-        <Progress
-          value={(chargedTarget ?? 0) * 100}
-          className="h-2 w-full rounded-full bg-gray-100"
-        />
       </div>
     </div>
   );

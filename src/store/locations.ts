@@ -5,8 +5,10 @@ import {
 import { z } from "zod";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { powerScale } from "./energy";
 
 export type MapAction = "setNewLocation" | "removeLocation" | "updateLocation";
+export const powerUnits = z.enum(["W", "kW", "MW", "GW"]);
 
 export const savedGeoJson = geoJsonFeature.extend({
   city: z.string().optional(),
@@ -24,57 +26,43 @@ type LocationsStore = {
   mapAction: MapAction | undefined;
   setNewLocation: (location: GeoJsonFeature) => void;
   removeLocation: (coordinates: number[]) => void;
+  updateLocation: (coordinates: number[], newLocation: SavedGeoJson) => void; // Updated function signature
   updateMapAction: (mapAction: MapAction | undefined) => void;
   setSelectedLocation: (location: number[] | undefined) => void;
 };
 
-type PersistedStore = {
-  locations: SavedGeoJson[];
-  addPersistedLocation: (location: SavedGeoJson) => void;
-  removePersistedLocation: (coordinates: number[]) => void;
-};
-
-export const useLocationStore = create<LocationsStore>((set, get) => ({
-  selectedLocation: undefined,
-  locations: [],
-  mapAction: undefined,
-  setNewLocation: (location) =>
-    set((state) => ({
-      ...state,
-      locations: [...state.locations, location],
-    })),
-  removeLocation: (coordinates) =>
-    set((state) => ({
-      ...state,
-      locations: state.locations.filter(
-        (feature) => feature.geometry.coordinates !== coordinates,
-      ),
-    })),
-  updateMapAction: (mapAction) => set({ mapAction }),
-  setSelectedLocation: (location) => set({ selectedLocation: location }),
-}));
-
-// persisted store
-
-export const usePersistedLocationStore = create(
-  persist<PersistedStore>(
-    (set) => ({
+export const useLocationStore = create(
+  persist<LocationsStore>(
+    (set, get) => ({
+      selectedLocation: undefined,
       locations: [],
-      addPersistedLocation: (location) =>
-        set((state) => ({
-          locations: [...state.locations, location],
-        })),
-      removePersistedLocation: (coordinates) =>
+      mapAction: undefined,
+      setNewLocation: (location) =>
         set((state) => ({
           ...state,
+          locations: [...state.locations, location],
+        })),
+      removeLocation: (coordinates) =>
+        set((state) => ({
           locations: state.locations.filter(
-            (feature) => feature.geometry.coordinates !== coordinates,
+            (feature) =>
+              String(feature.geometry.coordinates) !== String(coordinates),
           ),
         })),
+      updateLocation: (coordinates, newLocation) =>
+        set((state) => ({
+          locations: state.locations.map((location) =>
+            String(location.geometry.coordinates) === String(coordinates)
+              ? newLocation
+              : location,
+          ),
+        })),
+      updateMapAction: (mapAction) => set({ mapAction }),
+      setSelectedLocation: (location) => set({ selectedLocation: location }),
     }),
     {
-      name: "food-storage", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => sessionStorage), // uses sessionStorage
+      name: "location-storage", // Unique name for sessionStorage
+      storage: createJSONStorage(() => sessionStorage), // Using sessionStorage for persistence
     },
   ),
 );

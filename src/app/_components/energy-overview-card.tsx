@@ -10,17 +10,19 @@ import {
 import { BatteryLocationsMap } from "./map";
 import { LocationInstallationDetailForm } from "@/app/_components/solar-installation-detail";
 
-import { useLocationStore, usePersistedLocationStore } from "@/store/locations";
+import { useLocationStore } from "@/store/locations";
 import { api } from "@/trpc/react";
 import { EnergyOverview } from "./energy-overview";
-import { SavedLocationTable } from "./SavedLocationTable";
 import { DataTable } from "./persisted-location-table/data-table";
 
 import { columns } from "./persisted-location-table/columns";
 
 export function EnergyPreviewCard() {
-  const { selectedLocation } = useLocationStore();
-  const { locations } = usePersistedLocationStore();
+  const { selectedLocation, locations } = useLocationStore();
+  const tableData = locations.filter(
+    (location) =>
+      location.city !== undefined && location.forecastOutput !== undefined,
+  );
   const { data, isError, isLoading, refetch } =
     api.weather.getCurrentWeather.useQuery(
       {
@@ -34,11 +36,11 @@ export function EnergyPreviewCard() {
     );
 
   return (
-    <Card className="mx-12 w-3/4 max-w-screen-xl">
+    <Card className="mx-12 max-w-screen-xl">
       <CardHeader className="px-6 pb-4 pt-6">
         <CardTitle className="text-lg">Hybrid Energy Overview</CardTitle>
       </CardHeader>
-      <CardContent className="flex gap-4 p-6 sm:flex-col">
+      <CardContent className="flex flex-col gap-4 p-6">
         <div className="grid gap-6 md:grid-cols-2">
           <LocationInstallationDetailForm />
           <EnergyOverview
@@ -50,12 +52,16 @@ export function EnergyPreviewCard() {
         </div>
         <div className="w-full py-8">
           <CardTitle className="text-lg">Map</CardTitle>
+
+          <p className=" text-xs font-semibold">
+            Select a location on the map to see the energy forecast
+          </p>
+
           <BatteryLocationsMap />
         </div>
         <div>
           <CardTitle className="text-lg">Saved Locations Forecast</CardTitle>
-          {/* <SavedLocationTable /> */}
-          <DataTable data={locations} columns={columns} />
+          <DataTable data={tableData} columns={columns} />
         </div>
       </CardContent>
     </Card>
