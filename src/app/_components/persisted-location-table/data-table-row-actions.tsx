@@ -11,7 +11,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { type SavedGeoJson, useLocationStore } from "@/store/locations";
+import { useLocationStore, savedGeoJson } from "@/store/locations";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
