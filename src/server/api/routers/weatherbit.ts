@@ -3,8 +3,8 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { env } from "@/env";
 import {
   getCurrentWeatherParams,
-  ParamsKey,
-  CurrentWeatherResponse,
+  type ParamsKey,
+  type CurrentWeatherResponse,
   currentWeatherResponse,
 } from "../types/wethaerbit.types";
 
