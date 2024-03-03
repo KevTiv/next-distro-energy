@@ -1,29 +1,47 @@
-# Create T3 App
+# Next Distro app
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-## What's next? How do I make an app with this?
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
 - [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- [tRPC](https://trpc.io) Most pratical feature of this library is the ability to define types in the server folder and this type being reuse in the api calls made in the frontend.
 
-## Learn More
+## Get started
+#### nvm version: v20.6.0
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### step 1
+```sh
+    git clone https://github.com/KevTiv/next-distro-energy.git
+```
+### step 2
+```shell
+  cd next-distro-energy && yarn
+```
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### step 3
+```shell
+  yarn dev
+```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+then open [localhost](http://localhost:3000/) in your browser
 
-## How do I deploy this?
+## How to use this component
+This component assume you would like to know the potential solar energy output 
+your solar panel installation would take to charge a battery setup this battery
+setup unit can be adjusted from W to GW.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Once you've inputed the necessarry value, add a location on the map and click on a location 
+to have it selected. A query to the [weatherbit api](https://www.weatherbit.io/) will then be 
+made and cached about weather data about the location based on it's geo-coordinates.
+
+From [weatherbit api](https://www.weatherbit.io/) **aqi**: Air Quality Index and 
+**ghi**: Global horizontal solar irradiance (W/m^2) is used to calculate the energy 
+production your installation would have and how long it would take to charge your 
+battery installation to 25%, 50%, 75%, 100%.
+
+If all the rquired value are present you can then save the calculation value into a 
+dedicated paginated table table, inspired by [shadcn task example](https://github.com/shadcn-ui/ui/tree/main/apps/www/app/examples/tasks).
+Table data can filtered through using search input and sorted through using table headers.
+
