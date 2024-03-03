@@ -1,6 +1,7 @@
 "use client";
+// https://github.com/shadcn-ui/ui/tree/main/apps/www/app/examples/tasks
 
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
