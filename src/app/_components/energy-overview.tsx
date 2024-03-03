@@ -10,8 +10,6 @@ import {
   Sunset,
   Zap,
   ZapOff,
-  MapPinOff,
-  MapPin,
 } from "lucide-react";
 import { useMemo } from "react";
 import { calculateDailyEnergyGeneration } from "@/lib/dailyEnergyGeneration";
@@ -83,18 +81,6 @@ export function EnergyOverview({
           )}
         </div>
         <div className="flex items-center gap-4">
-          {selectedLocation ? (
-            <div className="flex items-center gap-2">
-              <MapPin size={16} />
-              <p className="text-xs font-medium">
-                lon: {selectedLocation[0]?.toFixed(4)} lat:{" "}
-                {selectedLocation[1]?.toFixed(4)}
-              </p>
-            </div>
-          ) : (
-            <MapPinOff size={16} />
-          )}
-
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>

@@ -1,11 +1,11 @@
 "use client";
-import { type ReactElement, useCallback, useMemo } from "react";
+import { type ReactElement, useMemo } from "react";
 import { Map } from "react-map-gl";
 import DeckGL from "@deck.gl/react/typed";
 import { GeoJsonLayer } from "@deck.gl/layers/typed";
 import { env } from "@/env";
 import { Button } from "./ui/button";
-import { MapPin, Trash2 } from "lucide-react";
+import { MapPin, MapPinOff, Trash2 } from "lucide-react";
 import { type MapAction, useLocationStore } from "@/store/locations";
 import { findNearestSavedLocation } from "@/lib/findNearestSavedLocation";
 import {
@@ -33,7 +33,12 @@ type LocationActions = {
   selected: boolean;
 };
 
-export function BatteryLocationsMap() {
+type BatteryLocationsMapProps = {
+  city?: string;
+};
+export function BatteryLocationsMap({
+  city,
+}: Readonly<BatteryLocationsMapProps>) {
   const {
     updateMapAction,
     mapAction,
@@ -41,6 +46,7 @@ export function BatteryLocationsMap() {
     removeLocation,
     locations,
     setSelectedLocation,
+    selectedLocation,
   } = useLocationStore();
 
   const handleAddLocation = ({
@@ -122,6 +128,21 @@ export function BatteryLocationsMap() {
 
   return (
     <div className="relative flex flex-col gap-2">
+      {selectedLocation ? (
+        <div className="flex items-center gap-2">
+          selected
+          <MapPin size={16} />
+          <p className="text-xs font-medium">
+            <span className="text-bold underline underline-offset-1">
+              {city}
+            </span>{" "}
+            Lon: {selectedLocation[0]?.toFixed(4)} Lat:{" "}
+            {selectedLocation[1]?.toFixed(4)}
+          </p>
+        </div>
+      ) : (
+        <MapPinOff size={16} />
+      )}
       <div className="absolute -top-16 right-0 m-4 flex gap-2">
         {locationActions.map(({ icon, tooltip, selected, onClick }) => (
           <TooltipProvider key={`${tooltip}`}>

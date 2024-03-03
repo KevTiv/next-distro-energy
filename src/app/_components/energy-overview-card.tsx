@@ -57,7 +57,7 @@ export function EnergyPreviewCard() {
             Select a location on the map to see the energy forecast
           </p>
 
-          <BatteryLocationsMap />
+          <BatteryLocationsMap city={data?.city_name} />
         </div>
         <div>
           <CardTitle className="text-lg">Saved Locations Forecast</CardTitle>
